@@ -7,10 +7,10 @@ function primitiveMultiply(a, b) {
 }
 
 function reliableMultiply(a, b) {
-  try {
+   try {
     return primitiveMultiply(a, b)
   } catch (e) {
-    if (e.__proto__.constructor.name === "MultiplicatorUnitFailure") {
+        if (e instanceof MultiplicatorUnitFailure) {
       return reliableMultiply(a, b)
     }
   }
