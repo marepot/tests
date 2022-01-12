@@ -1,9 +1,9 @@
 var box = {
-  locked: true,
-  unlock: function () {
+  locked: false,
+  unlock: function() {
     this.locked = false
   },
-  lock: function () {
+  lock: function() {
     this.locked = true
   },
   _content: [],
@@ -14,21 +14,33 @@ var box = {
 }
 
 function withBoxUnlocked(body) {
-  try {
-    box.unlock()
-    body()
-  } catch (e) {
-    console.log(e.message)
-  } finally {
-    box.lock()
+  if (box.locked) {
+    try {
+      box.unlock()
+      body()
+    } catch (e) {
+      console.log(e.message)
+    } finally {
+
+      box.lock()
+    }
+  } else {
+    try {
+      box.unlock()
+      body()
+    } catch (e) {
+      console.log(e.message)
+    } finally {
+
+    }
   }
 }
-withBoxUnlocked(function () {
+withBoxUnlocked(function() {
   box.content.push("золотишко")
   console.log(box.content)
 })
 try {
-  withBoxUnlocked(function () {
+  withBoxUnlocked(function() {
     throw new Error("Пираты на горизонте! Отмена!")
   })
 } catch (e) {
